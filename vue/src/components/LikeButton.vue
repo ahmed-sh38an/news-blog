@@ -56,7 +56,6 @@ export default {
   mounted() {
     store.dispatch("likeCount", this.post.id).then((res) => {
       this.count = res.data;
-      console.log(res.data);
       return res;
     });
   },

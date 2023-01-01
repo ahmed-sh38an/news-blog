@@ -7,6 +7,7 @@ import Register from "../views/Register.vue";
 import AdminView from "../views/admin/AdminView.vue";
 import AdminLogin from "../views/admin/AdminLogin.vue";
 import AdminRegister from "../views/admin/AdminRegister.vue";
+import EditPost from "../views/admin/EditPost.vue";
 import AuthLayout from "../components/AuthLayout.vue";
 import store from "../store";
 const router = createRouter({
@@ -70,6 +71,12 @@ const router = createRouter({
       path: "/create",
       name: "create",
       component: CreatePost,
+      meta: { isAdmin: true },
+    },
+    {
+      path: "/edit/:slug",
+      name: "edit",
+      component: EditPost,
       meta: { isAdmin: true },
     },
   ],

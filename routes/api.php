@@ -24,10 +24,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware('guest')->group(function () {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
     Route::post('/admin/register', [AdminController::class, 'register']);
     Route::post('/admin/login', [AdminController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
 });
 
 Route::middleware('auth:user')->group(function () {
@@ -36,11 +36,11 @@ Route::middleware('auth:user')->group(function () {
     Route::post('/like/{post:id}', [LikeController::class, 'store']);
 });
 
-Route::middleware('auth:admin')->group(function () {
+Route::middleware('auth:admins')->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
     Route::post('/create', [PostController::class, 'store']);
-    Route::post('/update/{id}', [PostController::class, 'update']);
-    Route::post('/delete/{id}', [PostController::class, 'destroy']);
+    Route::put('/edit/{post:id}', [PostController::class, 'update']);
+    Route::delete('/delete/{post:id}', [PostController::class, 'destroy']);
 });
 
 Route::get('/index', [PostController::class, 'index']);

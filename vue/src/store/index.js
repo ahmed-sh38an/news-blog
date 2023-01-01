@@ -104,6 +104,17 @@ const store = createStore({
     likeCount({ commit }, id) {
       return axiosClient.get(`/like/${id}`);
     },
+    deletePost({ commit }, id) {
+      return axiosClient.delete(`/delete/${id}`).then((res) => {
+        return res;
+      });
+    },
+    editPost({ commit }, post) {
+      return axiosClient.put(`/edit/${post.id}`, post).then(({ data }) => {
+        commit("setCurrentPost", data.data);
+        return data;
+      });
+    },
   },
   mutations: {
     setUser: (state, userData) => {

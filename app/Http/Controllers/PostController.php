@@ -86,7 +86,14 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $post->update($request->validated());
+        $data = $request->validated();
+
+        if (isset($data['image'])) {
+            $relativePath = $this->saveImage($data['image']);
+            $data['image'] = $relativePath;
+        }
+
+        $post->update($data);
 
         return new PostResource($post);
     }
@@ -106,7 +113,7 @@ class PostController extends Controller
         }
 
         $post->delete();
-        return response('', 204);
+        return response('Deleted', 204);
     }
 
     public function saveImage($image)

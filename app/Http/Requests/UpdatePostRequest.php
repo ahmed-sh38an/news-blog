@@ -19,7 +19,8 @@ class UpdatePostRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'author_id' => $this->user()->id
+            'author_id' => $this->user()->id,
+            'author' => $this->user()->name,
         ]);
     }
 
@@ -34,7 +35,8 @@ class UpdatePostRequest extends FormRequest
             'title' => 'string|required',
             'description' => 'required|string',
             'image' => 'nullable|string',
-            'author_id' => 'exists:admins,id'
+            'author_id' => 'exists:admins,id',
+            'author' => 'string|exists:admins,name',
         ];
     }
 }
