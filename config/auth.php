@@ -45,17 +45,21 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
-        'user' => [
+        'api-user' => [
             'driver' => 'passport',
             'provider' => 'users',
         ],
-        'admins' => [
+        'api-admins' => [
             'driver' => 'passport',
             'provider' => 'admins',
         ],
         'adminapi' => [
             'driver' => 'session',
             'provider' => 'admins',
+        ],
+        'normal-user' => [
+            'driver' => 'passport',
+            'provider' => 'users',
         ],
     ],
 
@@ -84,7 +88,8 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
-        ]
+        ],
+
 
         // 'users' => [
         //     'driver' => 'database',

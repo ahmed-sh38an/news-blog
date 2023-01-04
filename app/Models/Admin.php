@@ -20,7 +20,7 @@ class Admin extends Authenticatable
         'password',
     ];
 
-    protected $guard = 'admin';
+    protected $guard = 'api-admins';
 
     protected $hidden = [
         'password',
@@ -36,13 +36,13 @@ class Admin extends Authenticatable
         return $this->hasMany($posts);
     }
 
-    public function comments(Comment $comment)
+    public function comments()
     {
-        return $this->hasMany($comment);
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function likes(Like $like)
+    public function likes()
     {
-        return $this->hasMany($like);
+        return $this->morphMany(Like::class, 'likeable');
     }
 }

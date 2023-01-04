@@ -40,20 +40,38 @@ class AdminController extends Controller
 
     public function login(Request $request)
     {
+
         $data = $request->validate([
             'email' => 'required|email|exists:admins,email',
             'password' => 'required',
         ]);
 
 
-        if (!Auth::guard('adminapi')->attempt($data)) {
+        // if (!Auth::guard('api-admins')->validate($data)) {
+        //     return response([
+        //         'error' => 'The provided credentials are not correct'
+        //     ], 422);
+        // }
+        $preAdmin = Admin::where('email', $data['email'])->first();
+
+
+        $hashing = Hash::check($data['password'], $preAdmin->password);
+
+
+        if (!Hash::check($data['password'], $preAdmin->password)) {
+
             return response([
                 'error' => 'The provided credentials are not correct'
             ], 422);
         }
+        
+        $user = Admin::where('email', $data['email'])->first();
 
-        $admin = Auth::guard('adminapi')->user();
+        Auth::guard('api-admins')->setUser($user);
 
+        $admin = Auth::guard('api-admins')->user();
+
+        
         //  if (!Auth::guard('admin')->validate([
         //     'email' => 'required|email|exists:admins,email',
         //     'password' => 'required',
@@ -65,7 +83,7 @@ class AdminController extends Controller
         // $admin = Auth::guard('admin')->setUser(Authenticatable $user);
 
 
-        $tokenResult = $admin->createToken('Personal Access Token');
+        $tokenResult = $admin->createToken('Admin Access Token');
 
         $token = $tokenResult->token;
         if ($request->remember_me) {

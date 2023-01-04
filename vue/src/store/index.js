@@ -87,10 +87,18 @@ const store = createStore({
         });
     },
     addComment({ commit }, data) {
-      return axiosClient.post("/comment", data).then(({ data }) => {
-        commit("setComments", data);
-        return data;
-      });
+      if (this.state.user.admin) {
+        return axiosClient.post("/admin/comment", data).then(({ data }) => {
+          commit("setComments", data);
+          return data;
+        });
+      } else {
+
+        return axiosClient.post("/comment", data).then(({ data }) => {
+          commit("setComments", data);
+          return data;
+        });
+      }
     },
     pullComments({ commit }, id) {
       return axiosClient.get(`/comment/${id}`).then(({ data }) => {
@@ -99,7 +107,11 @@ const store = createStore({
       });
     },
     like({ commit }, id) {
-      return axiosClient.post(`/like/${id}`);
+      if (this.state.user.admin) {
+        return axiosClient.post(`/admin/like/${id}`);
+      } else {
+        return axiosClient.post(`/like/${id}`);
+      }
     },
     likeCount({ commit }, id) {
       return axiosClient.get(`/like/${id}`);

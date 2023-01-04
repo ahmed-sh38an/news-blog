@@ -30,23 +30,42 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-Route::middleware('auth:user')->group(function () {
+Route::middleware('auth:api-user')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/comment', [CommentController::class, 'store']);
     Route::post('/like/{post:id}', [LikeController::class, 'store']);
+    Route::post('/comment', [CommentController::class, 'store']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
 
-Route::middleware('auth:admins')->group(function () {
+Route::middleware(['auth:api-admins'])->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
     Route::post('/create', [PostController::class, 'store']);
     Route::put('/edit/{post:id}', [PostController::class, 'update']);
     Route::delete('/delete/{post:id}', [PostController::class, 'destroy']);
+    Route::post('/admin/comment', [CommentController::class, 'reply']);
+    Route::post('admin/like/{post:id}', [LikeController::class, 'love']);
+    Route::get('/admin', function (Request $request) {
+        return $request->user();
+    });
+
 });
+
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::middleware('auth:api-admins')->get('/admin', function (Request $request) {
+    return $request->user();
+});
+
 
 Route::get('/index', [PostController::class, 'index']);
 Route::get('/index/{post:slug}', [PostController::class, 'show']);
 Route::get('/comment/{post:id}', [CommentController::class, 'index']);
-Route::get('/like/{post:id}', [LikeController::class, 'count']);
+Route::get('/like/{post:id}', [LikeController::class, 'countLikes']);
 
 Route::get('/foo', function () {
     return 'bar';

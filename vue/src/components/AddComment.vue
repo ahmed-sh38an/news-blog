@@ -1,8 +1,13 @@
+<script setup>
+import store from "../store";
+</script>
+
 <template>
   <div
     class="bg-gray-50 border border-gray-200 p-3 rounded-xl max-w-4xl mx-auto"
   >
-    <form @submit.prevent="addComment" class="flex flex-col">
+    <p v-if="!store.state.user.token" class="text-center py-2 font-semibold">Login to leave a comment</p>
+    <form v-else-if="store.state.user.token" @submit.prevent="addComment" class="flex flex-col">
       <textarea
         name="comment"
         id="comment"
@@ -39,7 +44,6 @@
 </template>
 
 <script>
-import store from "../store";
 
 export default {
   props: ["post"],

@@ -20,7 +20,7 @@ class StoreCommentRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'commentor' => $this->user()->id,
+            'user_id' => $this->user()->id,
         ]);
     }
 
@@ -33,7 +33,8 @@ class StoreCommentRequest extends FormRequest
     {
         return [
             'comment' => 'required|string',
-            'commentor' => 'required',
+            'user_id' => 'nullable',
+            'admin_id' => 'nullable',
             'post_id' => 'required'
         ];
     }

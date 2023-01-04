@@ -19,7 +19,7 @@ class CommentController extends Controller
      */
     public function index($id)
     {
-        return CommentResource::collection(Comment::all()->where('post_id', $id));
+        return CommentResource::collection(Comment::where('post_id', $id)->paginate());
     }
 
     /**
@@ -38,12 +38,40 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
 
-        $comment = Comment::create($data);
-        return new CommentResource($comment);
+        Auth::user()->comments()->create([
+            'comment' => $request['comment'],
+            'post_id' => $request['post_id']
+        ]);
+
+        return ;
+        // $data = $request->validated();
+
+        // $comment = Comment::create($data);
+        // return new CommentResource($comment);
+    }
+
+    public function reply(Request $request)
+    {
+
+        auth()->user()->comments()->create([
+            'comment' => $request['comment'],
+            'post_id' => $request['post_id']
+        ]);
+
+        return ;
+        // $data = $request->validate([
+        //     'comment' => 'required|string',
+        //     'user_id' => 'nullable',
+        //     'admin_id' => 'nullable',
+        //     'post_id' => 'required'
+        // ]);
+        // $data['admin_id'] = Auth::user()->id;
+
+        // $comment = Comment::create($data);
+        // return new CommentResource($comment);
     }
 
     /**

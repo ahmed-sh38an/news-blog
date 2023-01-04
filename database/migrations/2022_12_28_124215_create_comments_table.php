@@ -16,10 +16,11 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string('comment');
             $table->foreignIdFor(Post::class, 'post_id');
-            $table->foreignId('commentor');
+            $table->string('comment');
+            $table->morphs('commentable');
+            $table->timestamps();
+
         });
     }
 

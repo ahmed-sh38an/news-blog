@@ -22,7 +22,7 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected $guard = 'user';
+    protected $guard = 'api-user';
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -42,13 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function comments(Comment $comment)
+    public function comments()
     {
-        return $this->hasMany($comment);
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function likes(Like $like)
+    public function likes()
     {
-        return $this->hasMany($like);
+        return $this->morphMany(Like::class, 'likeable');
     }
 }

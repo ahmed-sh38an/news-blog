@@ -16,13 +16,9 @@ class Like extends Model
         return $this->belongsTo($post);
     }
 
-    public function user(User $user)
+    public function likeable()
     {
-        return $this->belongsTo($user);
+        return $this->morphTo();
     }
 
-    public function admin(Admin $user)
-    {
-        return $this->belongsTo($user);
-    }
 }

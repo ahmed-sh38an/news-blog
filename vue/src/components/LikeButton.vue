@@ -38,19 +38,24 @@ export default {
   },
   methods: {
     like() {
-      store.dispatch("like", this.post.id).then((res) => {
-        if (res.data === 1) {
-          this.fill = "red";
-          this.stroke = "red";
-          this.liked = "Liked";
-          this.count = this.count + 1;
-        } else if (res.data === 0) {
-          this.fill = "none";
-          this.stroke = "currentColor";
-          this.count = this.count - 1;
-        }
-        return res;
-      });
+      if (!store.state.user.token) {
+        alert('Log in to leave a Like')
+      } else {
+        store.dispatch("like", this.post.id).then((res) => {
+          this.count = res.data;
+          if (this.fill == 'none') {
+            this.fill = 'red'
+          } else if (this.fill == 'red') {
+            this.fill = 'none'
+          }
+          if (this.stroke == 'currentColor') {
+            this.stroke = 'red'
+          } else if (this.stroke == 'red') {
+            this.stroke = 'currentColor'
+          }
+          return res;
+        });
+      }
     },
   },
   mounted() {

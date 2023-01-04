@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -21,7 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return PostResource::collection(Post::all()->sortDesc());
+        return PostResource::collection(Post::paginate()->sortDesc());
     }
 
     /**
@@ -43,7 +44,6 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $data = $request->validated();
-
 
         if (isset($data['image'])) {
             $relativePath = $this->saveImage($data['image']);

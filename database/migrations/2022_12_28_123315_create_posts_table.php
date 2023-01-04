@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->string('description');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
             $table->string('author');
         });
