@@ -91,6 +91,10 @@ class PostController extends Controller
         if (isset($data['image'])) {
             $relativePath = $this->saveImage($data['image']);
             $data['image'] = $relativePath;
+            if ($post->image) {
+                $absolutePath = public_path($survey->image);
+                File::delete($absolutePath);
+            }
         }
 
         $post->update($data);
