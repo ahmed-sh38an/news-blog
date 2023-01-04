@@ -46,14 +46,13 @@ class AdminController extends Controller
             'password' => 'required',
         ]);
 
-
+        
         // if (!Auth::guard('api-admins')->validate($data)) {
         //     return response([
         //         'error' => 'The provided credentials are not correct'
         //     ], 422);
         // }
         $preAdmin = Admin::where('email', $data['email'])->first();
-
 
         $hashing = Hash::check($data['password'], $preAdmin->password);
 
@@ -83,7 +82,7 @@ class AdminController extends Controller
         // $admin = Auth::guard('admin')->setUser(Authenticatable $user);
 
 
-        $tokenResult = $admin->createToken('Admin Access Token');
+        $tokenResult = $admin->createToken('Admin Access Token', ['admin']);
 
         $token = $tokenResult->token;
         if ($request->remember_me) {

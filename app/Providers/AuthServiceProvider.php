@@ -27,8 +27,15 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         Passport::routes(null, ['middleware' => 'provider']);
 
-        if (!$this->app->routesAreCached()) {
-            Passport::routes();
-        }
+        // if (!$this->app->routesAreCached()) {
+        //     Passport::routes();
+        // }
+
+        Passport::routes();
+
+        Passport::tokensCan([
+            'user' => 'User Type',
+            'admin' => 'Admin User Type',
+        ]);
     }
 }

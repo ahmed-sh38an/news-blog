@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 Route::middleware('guest')->group(function () {
     Route::post('/admin/register', [AdminController::class, 'register']);
@@ -30,7 +28,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-Route::middleware('auth:api-user')->group(function () {
+Route::middleware(['auth:api-user' , 'scope:user'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/like/{post:id}', [LikeController::class, 'store']);
     Route::post('/comment', [CommentController::class, 'store']);
@@ -39,7 +37,7 @@ Route::middleware('auth:api-user')->group(function () {
     });
 });
 
-Route::middleware(['auth:api-admins'])->group(function () {
+Route::middleware(['auth:api-admins', 'scope:admin'])->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
     Route::post('/create', [PostController::class, 'store']);
     Route::put('/edit/{post:id}', [PostController::class, 'update']);
@@ -53,11 +51,11 @@ Route::middleware(['auth:api-admins'])->group(function () {
 });
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware(['auth:api', 'scopes:user'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api-admins')->get('/admin', function (Request $request) {
+Route::middleware(['auth:api-admins', 'scopes:admin'])->get('/admin', function (Request $request) {
     return $request->user();
 });
 
