@@ -25,7 +25,7 @@ class AdminController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        $tokenResult = $admin->createToken('Personal Access Token');
+        $tokenResult = $admin->createToken('Personal Access Token', ['admin']);
 
         $token = $tokenResult->token;
 
